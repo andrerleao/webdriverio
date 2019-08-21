@@ -22,8 +22,11 @@ export function isSuccessfulResponse (statusCode, body) {
      * response contains a body
      */
     if (!body || typeof body.value === 'undefined') {
-        log.debug('request failed due to missing body')
-        return false
+        if (typeof body.sessionId === 'undefined') {            // Validation to use Appium with winAppDriver.
+                                                                // for example, when call .../clear, de return is {"sessionId": "id", "status": "0"}, in this case, body.value is undefined
+            log.debug('request failed due to missing body')
+            return false
+        }
     }
 
     /**
